@@ -12,8 +12,8 @@
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_vulkan.h"
-#include <SDL.h>
-#include <SDL_vulkan.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_vulkan.h>
 #include <stdio.h>  // printf, fprintf
 #include <stdlib.h> // abort
 #include <vulkan/vulkan.h>
@@ -484,7 +484,7 @@ main(int, char**)
 
   // Our state
   bool   show_demo_window = true;
-  bool   show_another_window = false;
+  bool   show_another_window = true;
   ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
   // Main loop

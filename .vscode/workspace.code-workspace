@@ -4,5 +4,13 @@
       "path": ".."
     }
   ],
-  "settings": {}
+  "settings": {
+    "cmake.preferredGenerators": ["Ninja"],
+    "editor.formatOnSave": true,
+    "search.exclude": {
+      "**/.git": true,
+      "**/thirdparty": true,
+      "**/*.code-search": true
+    }
+  }
 }
