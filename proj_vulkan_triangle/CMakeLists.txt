@@ -30,9 +30,8 @@ message("proj_vulkan_triangle: source_dir: ${CMAKE_SOURCE_DIR}")
 message("index CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
 
 # Add VCPKG packages
-# find_package(GameNetworkingSockets CONFIG REQUIRED)
-find_package(SDL2 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
+find_package(SDL2 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_path(VULKAN_HPP_INCLUDE_DIRS "vulkan/vulkan.hpp")
 
@@ -70,7 +69,6 @@ target_include_directories(proj_vulkan_triangle PRIVATE
   ${CMAKE_SOURCE_DIR}/proj_vulkan_triangle/src
 )
 
-# target_link_libraries(proj_vulkan_triangle PRIVATE GameNetworkingSockets::shared)
 target_link_libraries(proj_vulkan_triangle PRIVATE glm::glm)
 target_link_libraries(proj_vulkan_triangle PRIVATE SDL2::SDL2 SDL2::SDL2main)
 target_link_libraries(proj_vulkan_triangle PRIVATE imgui::imgui)
