@@ -8,7 +8,7 @@ namespace project {
 void
 check_vk_result(VkResult err)
 {
-  if (err == 0)
+  if (err == VK_SUCCESS)
     return;
   fprintf(stderr, "[vulkan] Error: VkResult = %d\n", err);
   if (err < 0)
