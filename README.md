@@ -1,6 +1,10 @@
-Install VulkanSDK from
+Install VulkanSDK to ./thirdpaty/VulkanSDK
 `https://vulkan.lunarg.com/sdk/home`
 
+Install packages via VCPKG
+
 ```
-vcpkg install --triplet=x64-windows
+git clone
+git submodule update --init --recursive
+thirdparty/vcpkg/bootstrap-vcpkg.bat
 ```

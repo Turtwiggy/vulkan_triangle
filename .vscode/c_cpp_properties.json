@@ -4,7 +4,9 @@
       "name": "Windows MSCV",
       "includePath": [
         "${workspaceFolder}/proj_vulkan_triangle/src",
-        "${workspaceFolder}/vcpkg_installed/x64-windows/include"
+        "${workspaceFolder}/build/vcpkg_installed/x64-windows/include",
+        "${workspaceFolder}/thirdparty/imgui",
+        "${workspaceFolder}/thirdparty/VulkanSDK/1.3.236.0/Include"
       ],
       "defines": ["UNICODE", "_UNICODE"],
       "windowsSdkVersion": "10.0.19041.0",

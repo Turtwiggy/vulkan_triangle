@@ -32,8 +32,8 @@ message("index CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
 # Add VCPKG packages
 find_package(glm CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
-find_package(imgui CONFIG REQUIRED)
-find_path(VULKAN_HPP_INCLUDE_DIRS "vulkan/vulkan.hpp")
+find_package(Vulkan REQUIRED)
+include(${CMAKE_SOURCE_DIR}/cmake/imgui.cmake)
 
 # Add source files
 file(GLOB_RECURSE SRC_FILES
@@ -43,36 +43,33 @@ file(GLOB_RECURSE SRC_FILES
 
 add_executable(proj_vulkan_triangle
   ${SRC_FILES}
-
-  # add icon to executable
-  # ${CMAKE_SOURCE_DIR}/proj_vulkan_triangle/assets/textures/resource.rc
 )
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
   set(VCPKG_INCLUDES
-    ${CMAKE_CURRENT_LIST_DIR}/thirdparty/vcpkg/installed/x64-windows/include
+    ${CMAKE_SOURCE_DIR}/build/vcpkg_installed/x64-windows/include
   )
 endif()
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
   set(VCPKG_INCLUDES
-    ${CMAKE_CURRENT_LIST_DIR}/thirdparty/vcpkg/installed/x64-linux/include
+    ${CMAKE_SOURCE_DIR}/build/vcpkg_installed/x64-linux/include
   )
 endif()
 
 # includes
 target_include_directories(proj_vulkan_triangle PRIVATE
+  ${CMAKE_SOURCE_DIR}/thirdparty/VulkanSDK/1.3.236.0/Include
   ${IMGUI_INCLUDES}
   ${VCPKG_INCLUDES}
-  ${STB_INCLUDE_DIRS}
-  ${VULKAN_HPP_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/proj_vulkan_triangle/src
 )
 
 target_link_libraries(proj_vulkan_triangle PRIVATE glm::glm)
 target_link_libraries(proj_vulkan_triangle PRIVATE SDL2::SDL2 SDL2::SDL2main)
-target_link_libraries(proj_vulkan_triangle PRIVATE imgui::imgui)
+target_link_libraries(proj_vulkan_triangle PRIVATE Vulkan::Vulkan)
 
+# target_link_libraries(proj_vulkan_triangle PRIVATE )
 IF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
   IF(CMAKE_BUILD_TYPE MATCHES DEBUG)
     # create symlink assets for build

@@ -1,12 +1,12 @@
 // References:
 // https://github.com/ocornut/imgui/blob/master/examples/example_sdl_vulkan/main.cpp
 
-#include "vulkan.hpp"
+#include "my_vulkan.hpp"
 using namespace project;
 
+#include "backends/imgui_impl_sdl2.h"
+#include "backends/imgui_impl_vulkan.h"
 #include "imgui.h"
-#include "imgui_impl_sdl.h"
-#include "imgui_impl_vulkan.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_vulkan.h>
 #include <vulkan/vulkan.h>
@@ -18,7 +18,9 @@ using namespace project;
 #include <string>
 #include <vector>
 
-const int g_MinImageCount = 2;
+// #define IMGUI_UNLIMITED_FRAME_RATE
+
+const int g_min_image_count = 2;
 
 #ifdef _DEBUG
 static VKAPI_ATTR VkBool32 VKAPI_CALL
@@ -268,12 +270,12 @@ setup_vulkan_window(ImGui_ImplVulkanH_Window* wd,
   VkPresentModeKHR present_modes[] = { VK_PRESENT_MODE_FIFO_KHR };
 #endif
   wd->PresentMode = ImGui_ImplVulkanH_SelectPresentMode(physical_device, wd->Surface, &present_modes[0], IM_ARRAYSIZE(present_modes));
-  // printf("[vulkan] Selected PresentMode = %d\n", wd->PresentMode);
+  printf("[vulkan] Selected PresentMode = %d\n", wd->PresentMode);
 
   // Create SwapChain, RenderPass, Framebuffer, etc.
-  IM_ASSERT(g_MinImageCount >= 2);
+  IM_ASSERT(g_min_image_count >= 2);
   ImGui_ImplVulkanH_CreateOrResizeWindow(
-    instance, physical_device, device, wd, queue_family.value(), allocator, width, height, g_MinImageCount);
+    instance, physical_device, device, wd, queue_family.value(), allocator, width, height, g_min_image_count);
 }
 
 void
@@ -326,6 +328,11 @@ main(int, char**)
   std::optional<uint32_t> queue_family = std::nullopt;
   VkQueue queue = VK_NULL_HANDLE;
   VkDescriptorPool descriptor_pool = VK_NULL_HANDLE;
+  // Surface
+  VkSurfaceKHR surface;
+  // Window Data
+  ImGui_ImplVulkanH_Window main_window_data;
+
   {
     uint32_t extensions_count = 0;
     SDL_Vulkan_GetInstanceExtensions(window, &extensions_count, NULL);
@@ -335,7 +342,6 @@ main(int, char**)
   }
 
   // Create Window Surface
-  VkSurfaceKHR surface;
   if (SDL_Vulkan_CreateSurface(window, instance, &surface) == 0) {
     printf("Failed to create SDL_Vulkan surface.\n");
     return EXIT_FAILURE;
@@ -344,9 +350,7 @@ main(int, char**)
   // Create framebuffers
   int w, h;
   SDL_GetWindowSize(window, &w, &h);
-  ImGui_ImplVulkanH_Window main_window_data;
-  ImGui_ImplVulkanH_Window* wd = &main_window_data;
-  setup_vulkan_window(wd, surface, w, h, instance, allocator, physical_device, device, queue_family);
+  setup_vulkan_window(&main_window_data, surface, w, h, instance, allocator, physical_device, device, queue_family);
 
   bool running = true;
   while (running) {
